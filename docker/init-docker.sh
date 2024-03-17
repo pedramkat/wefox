@@ -11,9 +11,7 @@ source .env
 if [[ $xdebug = y ]]
 then
     bash docker/configs/phpfpm/init-xdebug.sh
-    docker exec -u 0 -it php81_$APP_NAME bash
-    touch /var/log/xdebug.log
-    chown -R 33 /var/log/
+    docker exec -u 0 -i php81_$APP_NAME bash touch /var/log/xdebug.log && chown -R 33 /var/log/
 fi
 
 

@@ -46,8 +46,7 @@ class Book extends Resource
             ID::make()->sortable(),
 
             Text::make('Name')
-                ->sortable()
-                ->rules('required', 'max:255'),
+                ->sortable(),
 
             Text::make('sku')
                 ->sortable(),
@@ -55,7 +54,7 @@ class Book extends Resource
             Textarea::make('Description')
                 ->hideFromIndex(),
 
-            Number::make('Author')
+            Text::make('Author')
                 ->sortable(),
 
             Date::make('Date Published')
