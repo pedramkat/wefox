@@ -1,0 +1,466 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "WEFOX",
+        "description": "Api documentation",
+        "contact": {
+            "email": "peramkat@gmail.com"
+        },
+        "version": "1.0.0",
+        "x-logo": {
+            "url": "https://theme.zdassets.com/theme_assets/9115960/ef5800cc529889d180b05b57e40dd50e5c7adb73.png"
+        }
+    },
+    "paths": {
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "User login",
+                "description": "Authenticate user and generate a bearer token",
+                "operationId": "authLogin",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "description": "User's email",
+                                        "type": "string",
+                                        "example": "admin@wefox.it"
+                                    },
+                                    "password": {
+                                        "description": "User's password",
+                                        "type": "string",
+                                        "example": "admin"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User login successfully.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "token": {
+                                                    "type": "string",
+                                                    "example": "6|yiaRHtOKorrGkmREN1sFYcAc3OUKwypijISPT9w612e62d47"
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Admin"
+                                                },
+                                                "email_verified_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2024-03-17T14:29:50.000000Z"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User login successfully."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "description": "Error status",
+                                            "type": "boolean",
+                                            "example": "true"
+                                        },
+                                        "message": {
+                                            "description": "Error message",
+                                            "type": "string",
+                                            "example": "The provided credentials are incorrect."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/book/{book:sku}": {
+            "get": {
+                "tags": [
+                    "Api v1 - Books"
+                ],
+                "summary": "Get one book by it's sku",
+                "description": "Retrieve a specific book based on the provided sku",
+                "operationId": "35fb30b647ff27fb0b584c1e9b14a416",
+                "parameters": [
+                    {
+                        "name": "book:sku",
+                        "in": "path",
+                        "description": "sku of the book to update",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "varchar"
+                        },
+                        "example": "vuv-gox"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Unauthorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/books": {
+            "get": {
+                "tags": [
+                    "Api v1 - Books"
+                ],
+                "summary": "Retrieve all books",
+                "description": "Get a list of all books based on the provided filters",
+                "operationId": "03e2065639bbd7b1a1261c8382f882af",
+                "parameters": [
+                    {
+                        "name": "priceFrom",
+                        "in": "query",
+                        "description": "Minimum price for filtering books",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "priceTo",
+                        "in": "query",
+                        "description": "Maximum price for filtering books",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "dateFrom",
+                        "in": "query",
+                        "description": "Minimum starting date for filtering books",
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "name": "dateTo",
+                        "in": "query",
+                        "description": "Maximum ending date for filtering books",
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "name": "sortBy",
+                        "in": "query",
+                        "description": "Field to sort the books by",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "price"
+                    },
+                    {
+                        "name": "sortOrder",
+                        "in": "query",
+                        "description": "Sorting order ('asc' or 'desc')",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "asc",
+                                "desc"
+                            ]
+                        },
+                        "example": "desc"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of books for the specified travel"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/v1/book/create": {
+            "post": {
+                "tags": [
+                    "Api v1 - Books"
+                ],
+                "summary": "Create a new book",
+                "description": "Store a newly created book in the database",
+                "operationId": "a025c0cc898d58b8f7366eeed04fe26b",
+                "requestBody": {
+                    "description": "Book details",
+                    "required": true,
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "new book"
+                                    },
+                                    "sku": {
+                                        "type": "string",
+                                        "example": "cfg-srt"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "content of the first book"
+                                    },
+                                    "date_published": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2004-09-01"
+                                    },
+                                    "price": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": "50.10"
+                                    },
+                                    "author": {
+                                        "type": "string",
+                                        "example": "john doe"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Book created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Book created successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/book/update/{book:sku}": {
+            "put": {
+                "tags": [
+                    "Api v1 - Books"
+                ],
+                "summary": "Update a book",
+                "description": "Update an existing book in the database base on the give sku",
+                "operationId": "a27775637a5f70bbc1de8f5204d4438b",
+                "parameters": [
+                    {
+                        "name": "book:sku",
+                        "in": "path",
+                        "description": "sku of the book to update",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "varchar"
+                        },
+                        "example": "united-arab-emirates"
+                    }
+                ],
+                "requestBody": {
+                    "description": "Book details",
+                    "required": true,
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "new united arab emirates"
+                                    },
+                                    "price": {
+                                        "type": "integer",
+                                        "format": "int32",
+                                        "example": "5"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "new content"
+                                    },
+                                    "author": {
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Book updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Book updated successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/book/delete/{book:sku}": {
+            "delete": {
+                "tags": [
+                    "Api v1 - Books"
+                ],
+                "summary": "Delete a book",
+                "description": "Delete an existing book in the database base on the give sku",
+                "operationId": "fea54c881bceebff5c736eb235ce0e17",
+                "parameters": [
+                    {
+                        "name": "book:sku",
+                        "in": "path",
+                        "description": "sku of the book to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "varchar"
+                        },
+                        "example": "united-arab-emirates"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Book deleted successfully"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "headers": {
+            "Accept": {
+                "description": "The content type the client is willing to accept in the response",
+                "schema": {
+                    "type": "string",
+                    "default": "application/json",
+                    "example": "application/json"
+                }
+            },
+            "Content-Type": {
+                "description": "The content type of the request body",
+                "schema": {
+                    "type": "string",
+                    "default": "application/vnd.api+json",
+                    "example": "application/vnd.api+json"
+                }
+            },
+            "Cache-Control": {
+                "description": "Specify 'no-store' to ensure responses are not cached",
+                "schema": {
+                    "type": "string",
+                    "default": "no-store",
+                    "example": "no-store"
+                }
+            }
+        },
+        "securitySchemes": {
+            "sanctum": {
+                "type": "apiKey",
+                "description": "Enter token in format (Bearer <token>)",
+                "name": "Authorization",
+                "in": "header"
+            }
+        }
+    },
+    "security": [
+        {
+            "bearerAuth": []
+        }
+    ]
+}
