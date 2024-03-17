@@ -60,10 +60,13 @@ http://0.0.0.0:8077/api/documentation
 ## Testing
 
 **Lunch Docker bash**
-docker exec -it php81_wefox bash 
+`docker exec -it php81_wefox bash`
 
 **Lunch Docker psql**
-docker exec -it postgres_wefox psql -U wefox
+Befor testing create wefox_test database:
+Connect to database and create db:
+`docker exec -it postgres_wefox psql -U wefox`
+`create database wefox_test;`
 
 **Lunch the test**
 ` php artisan test --env=testing`
